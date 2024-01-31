@@ -1,17 +1,17 @@
 from PIL import Image
 import numpy as np
 import random
+import config as cfg
 
-w, h = 1024, 1024
-buffer_percentage = 25
+w = cfg.width
+h = cfg.height
+buffer_percentage = cfg.buffer_percentage
 node_bumper = [int(w / buffer_percentage), int(h / buffer_percentage)]
+initial_nodes = cfg.initial_nodes
 data = np.zeros((h, w, 3), dtype=np.uint8)
-x,y = 0,0
-initial_nodes = 3
-land_colour = [141,253,135]
-hill_colour = [123,255,159]
 cycles = int(w*h*initial_nodes)
-data[:,:] = [153, 255, 255]
+x,y = 0,0
+data[:,:] = cfg.water_colour
 
 
 def create_land_mass(x, y, colour):
@@ -31,26 +31,25 @@ def create_land_mass(x, y, colour):
         return False
     
 while x < initial_nodes:
-    rand_x = random.randint(node_bumper[0],w-node_bumper[0])
-    rand_y = random.randint(node_bumper[1],h-node_bumper[1])
-    data[rand_x,rand_y] = land_colour
+    initial_node_location = [random.randint(node_bumper[0],w-node_bumper[0]),random.randint(node_bumper[1],h-node_bumper[1])]
+    rand_x ,rand_y = initial_node_location
+    data[rand_x,rand_y] = cfg.land_colour
     
     for i in range(0, cycles):
         rand_x += random.randint(-1,1)
         rand_y += random.randint(-1,1)
-        if create_land_mass(rand_x, rand_y,land_colour):
-            i=cycles
+        create_land_mass(rand_x, rand_y, cfg.land_colour)
     x+=1
 
 while y < initial_nodes:
     rand_x = random.randint(node_bumper[0],w-node_bumper[0])
     rand_y = random.randint(node_bumper[1],h-node_bumper[1])
-    data[rand_x,rand_y] = hill_colour
+    data[rand_x,rand_y] = cfg.hill_colour
     
     for i in range(0, cycles):
         rand_x += random.randint(-1,1)
         rand_y += random.randint(-1,1)
-        if create_land_mass(rand_x, rand_y, hill_colour):
+        if create_land_mass(rand_x, rand_y, cfg.hill_colour):
             i=cycles
     y+=1
     
