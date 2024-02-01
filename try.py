@@ -69,5 +69,5 @@ while q < initial_nodes:
 ##create_land_mass(256, 256)
 
 img = Image.fromarray(data, 'RGB')
-img.save('map_fin.png')
+img.save('map_final.png')
 img.show()
